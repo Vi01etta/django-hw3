@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 DATA = {
     'omlet': {
@@ -18,6 +19,19 @@ DATA = {
     },
     # можете добавить свои рецепты ;)
 }
+
+def home_view(request):
+    return HttpResponse(f'Введите в адресную строку блюда, рецепт которого Вы ищете')
+
+def dish_view(request, dish_name):
+    dish = DATA.get(dish_name)
+    # context = {
+    #     dish: {
+    #         'ингредиент1': 'количество1',
+    #         'ингредиент2': 'количество2',
+    #     }
+    # }
+    return render(request, 'calculator/index.html', context)
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
