@@ -20,17 +20,23 @@ DATA = {
     # можете добавить свои рецепты ;)
 }
 
+
 def home_view(request):
     return HttpResponse(f'Введите в адресную строку блюда, рецепт которого Вы ищете')
 
+
 def dish_view(request, dish_name):
-    dish = DATA.get(dish_name)
-    # context = {
-    #     dish: {
-    #         'ингредиент1': 'количество1',
-    #         'ингредиент2': 'количество2',
-    #     }
-    # }
+    servings = int(request.GET.get('servings', 1))
+    recipe = DATA.get(dish_name)
+
+    for ingr, count in recipe.items():
+        if servings > 1:
+            count = count * servings
+            recipe[ingr] = count
+    context = {
+        "recipe": recipe
+    }
+    # return HttpResponse(f'{context}')
     return render(request, 'calculator/index.html', context)
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
